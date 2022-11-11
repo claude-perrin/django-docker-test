@@ -5,10 +5,20 @@ services:
     image: claudeperrin228/claudeperrin-djangotest:latest
     build: .
     command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/book_exchanger
+    volumes:  
+      - ./book_exchanger:/book_exchanger
     ports:
       - "8000:8000"
+    environment:
+      - SQL_ENGINE=django.db.backends.postgresql
+      - SQL_DATABASE=hello_django_dev
+      - SQL_USER=hello_django
+      - SQL_PASSWORD=hello_django
+      - SQL_HOST=db
+      - SQL_PORT=5432
+    depends_on:
+      - db
+
     
   db:
     image: postgres:13.0-alpine
@@ -21,4 +31,6 @@ services:
 
 volumes:
   postgres_data:
+  book_exchanger:
+    external: true
 
